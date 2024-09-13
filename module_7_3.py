@@ -3,13 +3,17 @@ class WordsFinder:
         self.file_names = args
 
     def get_all_words(self):
+
         all_words = {}
         for file_name in self.file_names:
             with open(file_name, 'r', encoding='utf-8') as file:
-                text = file.read().lower()
-                for char in [',', '.', '=', '!', '?', ';', ':', ' - ']:
-                    text = text.replace(char, ' ')
-                words = text.split() а
+                words = []
+                for line in file:
+                    line = line.lower()
+                    punctuation = [',', '.', '=', '!', '?', ';', ':']
+                    for punct in punctuation:
+                        line = line.replace(punct, '')
+                    line = line.replace(' - ', ' ')
                 all_words[file_name] = words
         return all_words
 
@@ -18,12 +22,15 @@ class WordsFinder:
         result = {}
         for name, words in self.get_all_words().items():
             if word in words:
-                result[name] = words.index(word)+1
-        return result
+                result[name] = words.index(word) + 1
+        return result def get_all_words(self):
+
+
 
     def count(self, word):
-        word = word.lower()
-        result = {}
-    for name, words in self.get_all_words().items():
-            result[name] = words.count(word)
-        return result
+        counters = {}
+        for value, key in self.get_all_words().items():
+            words_count = key.count(word.lower())
+            counters[value] = words_count
+
+        return counters
